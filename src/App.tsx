@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
-import { 
-  LayoutDashboard, Layers, Folder, Map, Settings as SettingsIcon, 
-  Search, Sun, Moon, HardDrive, User, Cpu, X, Play, Keyboard, ListVideo, Menu, BookOpen, ChevronLeft, ChevronRight
+import {
+  LayoutDashboard, Layers, Folder, Map, Settings as SettingsIcon,
+  Search, Sun, Moon, HardDrive, User, Cpu, X, Play, Keyboard, ListVideo, Menu, BookOpen, ChevronLeft, ChevronRight,
+  ScanEye
 } from 'lucide-react';
 import { Dashboard } from './components/Dashboard';
 import { WatchQueue } from './components/WatchQueue';
@@ -32,11 +33,11 @@ function App() {
   const [activeVideo, setActiveVideo] = useState<LearningResource | null>(null);
   const [activePlaylistId, setActivePlaylistId] = useState<string | null>(null);
   const [playlistContext, setPlaylistContext] = useState<PlaylistContext | null>(null);
-  
+
   // Search state
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  
+
   // Mobile navigation drawers
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
@@ -60,7 +61,7 @@ function App() {
     const nts = await StorageService.getNotes();
     const pths = await StorageService.getLearningPaths();
     const pls = await StorageService.getPlaylists();
-    
+
     // Merge into combined resource list with type fields
     const combined: LearningResource[] = [
       ...vids.map(v => ({ ...v, type: 'video' as const })),
@@ -100,10 +101,10 @@ function App() {
 
     const handleHashChange = async () => {
       const hash = window.location.hash;
-      
+
       if (hash.startsWith('#/watch/')) {
         const resourceId = hash.replace('#/watch/', '');
-        
+
         // Query both pools to locate resource
         const vids = await StorageService.getVideos();
         const arts = await StorageService.getArticles();
@@ -229,8 +230,8 @@ function App() {
     return (
       <div className="min-h-screen bg-background text-foreground p-4 sm:p-6 md:p-8 flex flex-col justify-between">
         <div className="w-full flex-1">
-          <FocusPlayer 
-            video={activeVideo} 
+          <FocusPlayer
+            video={activeVideo}
             categories={categories}
             playlistContext={playlistContext}
             onExit={() => {
@@ -253,8 +254,8 @@ function App() {
   return (
     <div className="h-screen overflow-hidden flex bg-background text-foreground relative">
       {/* Skip to Content Accessibility Link */}
-      <a 
-        href="#main-content" 
+      <a
+        href="#main-content"
         className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-purple-600 focus:text-white focus:rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 text-xs font-semibold"
       >
         Skip to main content
@@ -262,13 +263,13 @@ function App() {
       {/* 1. SIDEBAR NAVIGATION PANEL (Desktop) */}
       <aside className={`hidden md:flex flex-col h-full bg-card border-r border-border p-4 justify-between flex-shrink-0 select-none overflow-y-auto transition-all duration-300 ${sidebarCollapsed ? 'w-16' : 'w-64'}`}>
         <div className="space-y-6">
-          
+
           {/* Logo Brand Header & Toggle */}
           {sidebarCollapsed ? (
             // Collapsed: show icon + a dedicated expand button below it
             <div className="flex flex-col items-center gap-2">
               <div className="p-1.5 bg-purple-600 rounded text-white flex items-center justify-center">
-                <Cpu className="h-5 w-5 animate-pulse" />
+                <ScanEye className="h-5 w-5 animate-pulse" />
               </div>
               <button
                 onClick={() => setSidebarCollapsed(false)}
@@ -283,7 +284,7 @@ function App() {
             <div className="flex items-center justify-between px-1">
               <div className="flex items-center gap-2">
                 <div className="p-1.5 bg-purple-600 rounded text-white flex items-center justify-center">
-                  <Cpu className="h-5 w-5 animate-pulse" />
+                  <ScanEye className="h-5 w-5 animate-pulse" />
                 </div>
                 <div>
                   <span className="font-bold tracking-tight text-foreground text-sm">FocusHub</span>
@@ -302,7 +303,7 @@ function App() {
 
           {/* Quick Search Shortcut Trigger */}
           {sidebarCollapsed ? (
-            <button 
+            <button
               onClick={() => setSearchOpen(true)}
               className="mx-auto bg-input/25 border border-border hover:border-border/60 text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-300 rounded-md p-2 transition-colors flex items-center justify-center"
               title="Quick Search (⌘K)"
@@ -310,7 +311,7 @@ function App() {
               <Search className="h-4.5 w-4.5" />
             </button>
           ) : (
-            <button 
+            <button
               onClick={() => setSearchOpen(true)}
               className="w-full bg-input/25 border border-border hover:border-border/60 text-slate-650 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-300 rounded-md px-3 py-2 text-xs flex items-center justify-between transition-colors text-left"
             >
@@ -334,13 +335,11 @@ function App() {
                   onClick={() => {
                     setMobileMenuOpen(false);
                   }}
-                  className={`w-full flex items-center rounded-md text-xs font-semibold transition-all text-left ${
-                    sidebarCollapsed ? 'justify-center p-2' : 'gap-3 px-3 py-2.5'
-                  } ${
-                    isActive 
-                      ? 'bg-purple-600/10 border-l-2 border-purple-500 text-purple-700 dark:text-purple-400 font-bold' 
+                  className={`w-full flex items-center rounded-md text-xs font-semibold transition-all text-left ${sidebarCollapsed ? 'justify-center p-2' : 'gap-3 px-3 py-2.5'
+                    } ${isActive
+                      ? 'bg-purple-600/10 border-l-2 border-purple-500 text-purple-700 dark:text-purple-400 font-bold'
                       : 'text-slate-700 hover:text-purple-700 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-hover'
-                  }`}
+                    }`}
                   title={sidebarCollapsed ? item.label : undefined}
                 >
                   <Icon className={`h-4.5 w-4.5 ${isActive ? 'text-purple-700 dark:text-purple-400' : 'text-slate-500 dark:text-slate-400'}`} />
@@ -364,7 +363,7 @@ function App() {
                 <User className="h-4 w-4 text-slate-500" />
               </span>
             )}
-            <button 
+            <button
               onClick={handleToggleTheme}
               className="p-1.5 hover:bg-hover rounded-full text-slate-500 hover:text-foreground dark:text-slate-400 dark:hover:text-slate-200"
               title="Toggle Light/Dark Theme"
@@ -394,19 +393,19 @@ function App() {
         </div>
 
         <div className="flex items-center gap-2">
-          <button 
+          <button
             onClick={() => setSearchOpen(true)}
             className="p-2 text-slate-600 dark:text-slate-400 hover:text-foreground hover:bg-hover rounded"
           >
             <Search className="h-4 w-4" />
           </button>
-          <button 
+          <button
             onClick={handleToggleTheme}
             className="p-2 text-slate-600 dark:text-slate-400 hover:text-foreground hover:bg-hover rounded"
           >
             {theme === 'dark' ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
           </button>
-          <button 
+          <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="p-2 text-slate-600 dark:text-slate-400 hover:text-foreground hover:bg-hover rounded"
           >
@@ -430,11 +429,10 @@ function App() {
                   onClick={() => {
                     setMobileMenuOpen(false);
                   }}
-                  className={`w-full flex items-center gap-3 px-3 py-2 rounded-md text-xs font-semibold transition-all text-left ${
-                    isActive 
-                      ? 'bg-purple-600/10 border-l-2 border-purple-500 text-purple-700 dark:text-purple-400 font-bold' 
+                  className={`w-full flex items-center gap-3 px-3 py-2 rounded-md text-xs font-semibold transition-all text-left ${isActive
+                      ? 'bg-purple-600/10 border-l-2 border-purple-500 text-purple-700 dark:text-purple-400 font-bold'
                       : 'text-slate-700 hover:text-purple-700 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-hover'
-                  }`}
+                    }`}
                 >
                   <Icon className={`h-4.5 w-4.5 ${isActive ? 'text-purple-700 dark:text-purple-400' : 'text-slate-500 dark:text-slate-400'}`} />
                   {item.label}
@@ -446,34 +444,34 @@ function App() {
       )}
 
       {/* 2. MAIN WORKSPACE VIEW */}
-      <main 
+      <main
         id="main-content"
         tabIndex={0}
         aria-label="Main Workspace Content"
         className="flex-1 min-w-0 h-full overflow-y-auto p-4 sm:p-6 md:p-8 pt-20 md:pt-8 w-full focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-500/20"
       >
-        
+
         {/* Dynamic component routing based on selected tab */}
         {activeTab === 'dashboard' && (
-          <Dashboard 
-            videos={videos} 
-            categories={categories} 
+          <Dashboard
+            videos={videos}
+            categories={categories}
             onWatchVideo={handleWatchVideo}
             onRefreshData={refreshData}
           />
         )}
-        
+
         {activeTab === 'queue' && (
-          <WatchQueue 
-            videos={videos} 
-            categories={categories} 
+          <WatchQueue
+            videos={videos}
+            categories={categories}
             onWatchVideo={handleWatchVideo}
             onRefreshData={refreshData}
           />
         )}
 
         {activeTab === 'categories' && (
-          <Categories 
+          <Categories
             categories={categories}
             videos={videos}
             onRefreshData={refreshData}
@@ -482,7 +480,7 @@ function App() {
         )}
 
         {activeTab === 'paths' && (
-          <LearningPaths 
+          <LearningPaths
             videos={videos}
             categories={categories}
             onWatchVideo={handleWatchVideo}
@@ -491,7 +489,7 @@ function App() {
         )}
 
         {activeTab === 'playlists' && (
-          <Playlists 
+          <Playlists
             videos={videos}
             playlists={playlists}
             activePlaylistId={activePlaylistId}
@@ -505,7 +503,7 @@ function App() {
         )}
 
         {activeTab === 'articles' && (
-          <Articles 
+          <Articles
             videos={videos}
             categories={categories}
             onWatchVideo={handleWatchVideo}
@@ -514,7 +512,7 @@ function App() {
         )}
 
         {activeTab === 'settings' && (
-          <Settings 
+          <Settings
             onRefreshData={refreshData}
           />
         )}
@@ -524,20 +522,20 @@ function App() {
       {searchOpen && (
         <div className="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 flex items-start justify-center pt-24 px-4">
           <div className="fixed inset-0" onClick={() => setSearchOpen(false)}></div>
-          
+
           <div className="bg-card border border-border w-full max-w-lg rounded-lg shadow-2xl relative z-10 overflow-hidden flex flex-col max-h-[460px]">
             {/* Search Input field */}
             <div className="flex items-center px-4 py-3 border-b border-border gap-2.5">
               <Search className="h-4.5 w-4.5 text-slate-500" />
-              <input 
-                type="text" 
+              <input
+                type="text"
                 placeholder="Search across categories, videos, notes, playlists..."
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
                 autoFocus
                 className="bg-transparent text-sm w-full border-none focus:outline-none placeholder-slate-600 text-foreground"
               />
-              <button 
+              <button
                 onClick={() => setSearchOpen(false)}
                 className="p-1 hover:bg-hover rounded text-slate-500 hover:text-foreground"
               >
@@ -556,10 +554,10 @@ function App() {
               ) : (
                 <>
                   {/* If total zero matches */}
-                  {results && 
-                    results.videos.length === 0 && 
-                    results.categories.length === 0 && 
-                    results.paths.length === 0 && 
+                  {results &&
+                    results.videos.length === 0 &&
+                    results.categories.length === 0 &&
+                    results.paths.length === 0 &&
                     results.notes.length === 0 && (
                       <div className="text-center py-12 text-xs text-slate-500">
                         No matches found for "{searchQuery}".
