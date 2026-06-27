@@ -177,7 +177,7 @@ export const WatchQueue: React.FC<WatchQueueProps> = ({
   const lowPriority = activeVideos.filter(v => v.priority === 'Low');
 
   // ─── Shared selectors for category + priority in the add form ───
-  const CategoryPrioritySelectors = () => (
+  const renderCategoryPrioritySelectors = () => (
     <div className="flex flex-wrap items-center gap-3">
       <div className="flex items-center gap-1.5">
         <span className="text-[10px] font-bold uppercase text-slate-500 dark:text-slate-400">Category</span>
@@ -209,7 +209,7 @@ export const WatchQueue: React.FC<WatchQueueProps> = ({
   );
 
   // ─── Priority Lane Card ───
-  const VideoCard = ({ resource }: { resource: LearningResource }) => {
+  const renderVideoCard = (resource: LearningResource) => {
     const category = categories.find(c => c.name === resource.categoryName);
     const isVideo = resource.type === 'video';
     const thumbUrl = isVideo
@@ -217,7 +217,7 @@ export const WatchQueue: React.FC<WatchQueueProps> = ({
       : null;
 
     return (
-      <div className="bg-card border border-border rounded-xl overflow-hidden flex flex-col group hover:border-purple-500/40 hover:shadow-lg hover:shadow-purple-900/10 transition-all duration-200">
+      <div key={resource.id} className="bg-card border border-border rounded-xl overflow-hidden flex flex-col group hover:border-purple-500/40 hover:shadow-lg hover:shadow-purple-900/10 transition-all duration-200">
         {/* Thumbnail */}
         <div className="relative aspect-video w-full bg-zinc-900 overflow-hidden flex-shrink-0">
           {thumbUrl ? (
@@ -372,7 +372,7 @@ export const WatchQueue: React.FC<WatchQueueProps> = ({
                   Import Video
                 </button>
               </div>
-              <CategoryPrioritySelectors />
+              {renderCategoryPrioritySelectors()}
             </form>
           ) : (
             /* ── Search YouTube ── */
@@ -409,7 +409,7 @@ export const WatchQueue: React.FC<WatchQueueProps> = ({
               )}
 
               {/* Category + Priority selectors shown even during search */}
-              {hasApiKey && <CategoryPrioritySelectors />}
+              {hasApiKey && renderCategoryPrioritySelectors()}
 
               {/* Search Results Grid */}
               {searchResults.length > 0 && (
@@ -540,7 +540,7 @@ export const WatchQueue: React.FC<WatchQueueProps> = ({
                   </p>
                 </div>
               ) : (
-                items.map(video => <VideoCard key={video.id} resource={video} />)
+                items.map(video => renderVideoCard(video))
               )}
             </div>
           </div>

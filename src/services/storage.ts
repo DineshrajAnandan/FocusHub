@@ -9,11 +9,7 @@ const DEFAULT_GENERAL_CATEGORY: Category = {
 };
 
 export class StorageService {
-  // No-op: kept for compatibility in case callers reference it
-  static setSessionUser(_user: any) {}
-  static getUserId(): string | null { return null; }
-  static isSupabaseConnected(): boolean { return false; }
-  static async syncFromSupabase(): Promise<void> {}
+
 
   // ── Categories ──────────────────────────────────────────────────────────────
 
