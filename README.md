@@ -1,4 +1,4 @@
-# FocusHub (formerly FocusTube)
+# FocusHub
 
 ✅ **A premium, dark‑mode‑first learning hub** for videos, articles, and playlists. It helps you stay focused, track progress, and keep all your learning resources in one place.
 
