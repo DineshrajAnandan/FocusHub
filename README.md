@@ -114,14 +114,6 @@ npm run build   # creates the optimized `dist/` folder
 
 ---
 
-## 🙋‍♀️ Contributing
-1. Fork the repo.
-2. Create a feature branch.
-3. Ensure `npm run dev` builds without errors.
-4. Submit a PR with a clear description and screenshots.
-
----
-
 ## 📜 License
 MIT – Feel free to use, modify, and share.
 
