@@ -1,0 +1,103 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 16px;
+    --radius-full: 9999px;
+  }
+
+  /* Dark Theme (Default) */
+  :root, [data-theme="dark"] {
+    --background: 240 10% 3.9%;      /* HSL values */
+    --foreground: 0 0% 98%;
+    --card: 240 10% 5.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 4.9%;
+    --popover-foreground: 0 0% 98%;
+    
+    --primary: 263.4 70% 50.4%;
+    --primary-foreground: 210 20% 98%;
+    
+    --border: 240 5.9% 15%;
+    --input: 240 5.9% 15%;
+    --ring: 263.4 70% 50.4%;
+
+    --hover: 240 5.9% 10%;
+    --active: 240 5.9% 12%;
+    
+    --status-planned: 215 20.2% 65.1%;
+    --status-progress: 25.8 92.1% 54%;
+    --status-completed: 142.1 76.2% 36.3%;
+    --status-skipped: 346.8 77.2% 49.8%;
+
+    --priority-high: 346.8 77.2% 49.8%;
+    --priority-med: 25.8 92.1% 54%;
+    --priority-low: 215 20.2% 65.1%;
+  }
+
+  /* Light Theme */
+  [data-theme="light"] {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    --card: 0 0% 98.5%;
+    --card-foreground: 240 10% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+    
+    --primary: 262.1 83.3% 57.8%;
+    --primary-foreground: 210 20% 98%;
+    
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 262.1 83.3% 57.8%;
+
+    --hover: 240 4.8% 95.9%;
+    --active: 240 4.8% 93.9%;
+    
+    --status-planned: 220 8.9% 46.1%;
+    --status-progress: 24.6 95% 44.1%;
+    --status-completed: 142.1 76.2% 29.4%;
+    --status-skipped: 346.8 77.2% 43%;
+
+    --priority-high: 346.8 77.2% 43%;
+    --priority-med: 24.6 95% 44.1%;
+    --priority-low: 220 8.9% 46.1%;
+  }
+}
+
+@layer base {
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  /* Premium theme-aware scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--border));
+    border-radius: var(--radius-full);
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--primary) / 0.6);
+  }
+
+  /* Keyboard focus states outline customization */
+  *:focus-visible {
+    outline: 2px solid hsl(var(--primary));
+    outline-offset: 2px;
+  }
+}
