@@ -15,8 +15,11 @@ import { Articles } from './components/Articles';
 import { CommandPalette } from './components/CommandPalette';
 import { StorageService } from './services/storage';
 import { useTheme } from './hooks/useTheme';
+import { useHashRouter } from './hooks/useHashRouter';
 import type { Category, Note, LearningPath, LearningResource, Playlist } from './types';
 
+// Tab type definition removed, imported via useHashRouter inside (or just use it here if we need it)
+// We'll keep Tab here to avoid touching other files that might not be expecting it moved
 type Tab = 'dashboard' | 'queue' | 'categories' | 'paths' | 'playlists' | 'articles' | 'settings';
 
 interface PlaylistContext {
@@ -26,14 +29,16 @@ interface PlaylistContext {
 }
 
 function App() {
-  const [activeTab, setActiveTab] = useState<Tab>('dashboard');
+  const { route, navigateTo } = useHashRouter();
+  const activeTab = route.activeTab;
+  const activePlaylistId = route.activePlaylistId;
+  const activeVideoId = route.activeVideoId;
   const [videos, setVideos] = useState<LearningResource[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [notes, setNotes] = useState<Note[]>([]);
   const [paths, setPaths] = useState<LearningPath[]>([]);
   const [playlists, setPlaylists] = useState<Playlist[]>([]);
   const [activeVideo, setActiveVideo] = useState<LearningResource | null>(null);
-  const [activePlaylistId, setActivePlaylistId] = useState<string | null>(null);
   const [playlistContext, setPlaylistContext] = useState<PlaylistContext | null>(null);
 
   // Search state
@@ -66,105 +71,63 @@ function App() {
     setNotes(nts);
     setPaths(pths);
     setPlaylists(pls);
+  };
 
-    // Keep activeVideo in sync if it is currently playing
-    const hash = window.location.hash;
-    if (hash.startsWith('#/watch/')) {
-      const resourceId = hash.replace('#/watch/', '');
-      const currentPlaying = combined.find(r => r.id === resourceId);
-      if (currentPlaying) {
-        setActiveVideo(currentPlaying);
-        // Re-derive playlist context in case playlists changed
-        const ownerPlaylist = pls.find(pl => pl.videoIds.includes(currentPlaying.id));
+  useEffect(() => {
+    refreshData();
+  }, []);
+
+  useEffect(() => {
+    // Handle activeVideo synchronization based on activeVideoId from route
+    const syncActiveVideo = async () => {
+      if (!activeVideoId) {
+        setActiveVideo(null);
+        setPlaylistContext(null);
+        return;
+      }
+      
+      const vids = await StorageService.getVideos();
+      const arts = await StorageService.getArticles();
+      const pls = await StorageService.getPlaylists();
+      const combined: LearningResource[] = [
+        ...vids.map(v => ({ ...v, type: 'video' as const })),
+        ...arts.map(a => ({ ...a, type: 'article' as const }))
+      ];
+
+      const found = combined.find(r => r.id === activeVideoId);
+      if (found) {
+        // Auto-mark In Progress when starting to watch
+        let activeResource = found;
+        if (found.status === 'Planned') {
+          const updated = { ...found, status: 'In Progress' as const };
+          if (updated.type === 'video') {
+            await StorageService.updateVideo(updated);
+          } else {
+            await StorageService.updateArticle(updated);
+          }
+          activeResource = updated;
+          refreshData(); // Refresh list to reflect status change
+        }
+
+        // Derive playlist context
+        const ownerPlaylist = pls.find(pl => pl.videoIds.includes(found.id));
         if (ownerPlaylist) {
-          const idx = ownerPlaylist.videoIds.indexOf(currentPlaying.id);
+          const idx = ownerPlaylist.videoIds.indexOf(found.id);
           const nextId = ownerPlaylist.videoIds[idx + 1];
           const nextVideo = nextId ? combined.find(r => r.id === nextId) || null : null;
           setPlaylistContext({ playlistId: ownerPlaylist.id, playlistTitle: ownerPlaylist.title, nextVideo });
+          // Note: route.activePlaylistId is handled by the hook based on URL, 
+          // we just derive context here.
         } else {
           setPlaylistContext(null);
         }
-      }
-    }
-  };
 
-  // Load data on mount and set up hash routing
-  useEffect(() => {
-    refreshData();
-
-    const handleHashChange = async () => {
-      const hash = window.location.hash;
-
-      if (hash.startsWith('#/watch/')) {
-        const resourceId = hash.replace('#/watch/', '');
-
-        // Query both pools to locate resource
-        const vids = await StorageService.getVideos();
-        const arts = await StorageService.getArticles();
-        const pls = await StorageService.getPlaylists();
-        const combined: LearningResource[] = [
-          ...vids.map(v => ({ ...v, type: 'video' as const })),
-          ...arts.map(a => ({ ...a, type: 'article' as const }))
-        ];
-
-        const found = combined.find(r => r.id === resourceId);
-        if (found) {
-          // Auto-mark In Progress when starting to watch
-          let activeResource = found;
-          if (found.status === 'Planned') {
-            const updated = { ...found, status: 'In Progress' as const };
-            if (updated.type === 'video') {
-              await StorageService.updateVideo(updated);
-            } else {
-              await StorageService.updateArticle(updated);
-            }
-            activeResource = updated;
-          }
-
-          // Derive playlist context
-          const ownerPlaylist = pls.find(pl => pl.videoIds.includes(found.id));
-          if (ownerPlaylist) {
-            const idx = ownerPlaylist.videoIds.indexOf(found.id);
-            const nextId = ownerPlaylist.videoIds[idx + 1];
-            const nextVideo = nextId ? combined.find(r => r.id === nextId) || null : null;
-            setPlaylistContext({ playlistId: ownerPlaylist.id, playlistTitle: ownerPlaylist.title, nextVideo });
-            setActivePlaylistId(ownerPlaylist.id);
-          } else {
-            setPlaylistContext(null);
-          }
-
-          refreshData();
-          setActiveVideo(activeResource);
-        } else {
-          // If resource not found, default to dashboard
-          window.location.hash = '#/dashboard';
-        }
-      } else if (hash.startsWith('#/playlists/')) {
-        // Deep-link into a specific playlist: #/playlists/{playlistId}
-        const playlistId = hash.replace('#/playlists/', '');
-        setActiveTab('playlists');
-        setActiveVideo(null);
-        setActivePlaylistId(playlistId);
-      } else {
-        const tab = hash.replace('#/', '') as Tab;
-        const validTabs: Tab[] = ['dashboard', 'queue', 'categories', 'paths', 'playlists', 'articles', 'settings'];
-        if (validTabs.includes(tab)) {
-          setActiveTab(tab);
-          setActiveVideo(null);
-          if (tab !== 'playlists') setActivePlaylistId(null);
-        } else {
-          // Set default hash if empty or invalid
-          window.location.hash = '#/dashboard';
-        }
+        setActiveVideo(activeResource);
       }
     };
 
-    // Run on initial load
-    handleHashChange();
-
-    window.addEventListener('hashchange', handleHashChange);
-    return () => window.removeEventListener('hashchange', handleHashChange);
-  }, []);
+    syncActiveVideo();
+  }, [activeVideoId]);
 
   // Keyboard listener for command-palette search (⌘K)
   useEffect(() => {
@@ -182,7 +145,7 @@ function App() {
   }, []);
 
   const handleWatchVideo = (video: LearningResource) => {
-    window.location.hash = `#/watch/${video.id}`;
+    navigateTo(`#/watch/${video.id}`);
   };
 
   // Navigation config
@@ -207,13 +170,13 @@ function App() {
             playlistContext={playlistContext}
             onExit={() => {
               if (playlistContext) {
-                window.location.hash = `#/playlists/${playlistContext.playlistId}`;
+                navigateTo(`#/playlists/${playlistContext.playlistId}`);
               } else {
-                window.location.hash = `#/${activeTab}`;
+                navigateTo(`#/${activeTab}`);
               }
             }}
             onWatchNext={(nextVideo) => {
-              window.location.hash = `#/watch/${nextVideo.id}`;
+              navigateTo(`#/watch/${nextVideo.id}`);
             }}
             onRefreshData={refreshData}
           />
