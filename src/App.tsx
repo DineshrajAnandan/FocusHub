@@ -12,11 +12,8 @@ import { CommandPalette } from './components/CommandPalette';
 import { useTheme } from './hooks/useTheme';
 import { useHashRouter } from './hooks/useHashRouter';
 import { useAppData } from './hooks/useAppData';
-import type { Category, Note, LearningPath, LearningResource, Playlist } from './types';
+import type { LearningResource } from './types';
 
-// Tab type definition removed, imported via useHashRouter inside (or just use it here if we need it)
-// We'll keep Tab here to avoid touching other files that might not be expecting it moved
-type Tab = 'dashboard' | 'queue' | 'categories' | 'paths' | 'playlists' | 'articles' | 'settings';
 
 function App() {
   const { route, navigateTo } = useHashRouter();
