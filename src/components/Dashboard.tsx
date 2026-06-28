@@ -139,7 +139,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
           <h1 className="text-3xl font-black text-foreground tracking-tight">
             {getGreeting()}, <span className="text-purple-600 dark:text-purple-400">Learner</span>!
           </h1>
-          <p className="text-sm italic text-slate-700 dark:text-slate-300 font-medium">
+          <p className="text-sm italic text-slate-600 dark:text-slate-400 font-medium">
             "{selectedQuote}"
           </p>
         </div>
@@ -175,11 +175,11 @@ export const Dashboard: React.FC<DashboardProps> = ({
                 >
                   {continueWatching.categoryName}
                 </span>
-                <span className="text-xs text-slate-400">•</span>
+                <span className="text-xs text-slate-600 dark:text-slate-400">•</span>
                 <span className="text-xs font-semibold text-slate-655 dark:text-slate-400">
                   {continueWatching.type === 'video' ? continueWatching.channel : continueWatching.source}
                 </span>
-                <span className="text-xs text-slate-400">•</span>
+                <span className="text-xs text-slate-600 dark:text-slate-400">•</span>
                 <span className="text-[10px] uppercase font-bold text-purple-600 dark:text-purple-400">
                   {continueWatching.type === 'video' ? 'Video' : 'Article'}
                 </span>
@@ -296,7 +296,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
                         <span className="text-slate-650 dark:text-slate-400 truncate max-w-[110px]">
                           {video.type === 'video' ? video.channel : video.source}
                         </span>
-                        <span className="text-slate-400 dark:text-slate-600">•</span>
+                        <span className="text-slate-600 dark:text-slate-400">•</span>
                         
                         <select
                           value={video.categoryName}
@@ -321,7 +321,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
                             <option key={c.name} value={c.name} className="text-foreground bg-background">{c.name}</option>
                           ))}
                         </select>
-                        <span className="text-slate-400 dark:text-slate-600">•</span>
+                        <span className="text-slate-600 dark:text-slate-400">•</span>
                         <span className={`px-2 py-0.5 rounded text-[8px] font-bold border ${
                           video.priority === 'High' ? 'text-red-700 dark:text-red-400 border-red-500/20 bg-red-500/5' :
                           video.priority === 'Medium' ? 'text-orange-700 dark:text-orange-400 border-orange-500/20 bg-orange-500/5' :

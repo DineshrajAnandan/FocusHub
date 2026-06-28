@@ -75,9 +75,9 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
         <div className="flex-1 overflow-y-auto p-3.5 space-y-4">
           {!searchQuery.trim() ? (
             <div className="text-center py-10 space-y-2">
-              <Keyboard className="h-8 w-8 mx-auto text-slate-500 dark:text-slate-700" />
+              <Keyboard className="h-8 w-8 mx-auto text-slate-500 dark:text-slate-400" />
               <p className="text-xs text-slate-700 dark:text-slate-400 font-semibold">Search FocusHub global index</p>
-              <p className="text-[10px] text-slate-500 dark:text-slate-500">Type matching keywords above. Press ESC to exit.</p>
+              <p className="text-[10px] text-slate-500 dark:text-slate-400">Type matching keywords above. Press ESC to exit.</p>
             </div>
           ) : (
             <>
@@ -87,7 +87,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
                 results.categories.length === 0 &&
                 results.paths.length === 0 &&
                 results.notes.length === 0 && (
-                  <div className="text-center py-12 text-xs text-slate-500">
+                  <div className="text-center py-12 text-xs text-slate-600 dark:text-slate-400">
                     No matches found for "{searchQuery}".
                   </div>
                 )

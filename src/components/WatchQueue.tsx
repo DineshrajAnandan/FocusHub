@@ -253,7 +253,7 @@ export const WatchQueue: React.FC<WatchQueueProps> = ({
           <h4 className="text-[13px] font-semibold text-foreground line-clamp-2 leading-snug">
             {resource.title}
           </h4>
-          <p className="text-[10px] text-slate-400 truncate">
+          <p className="text-[10px] text-slate-600 dark:text-slate-400 truncate">
             {isVideo ? (resource as Video).channel : (resource as Article).source}
           </p>
 
@@ -304,9 +304,9 @@ export const WatchQueue: React.FC<WatchQueueProps> = ({
 
   // ─── Lane wrapper ───
   const laneConfig = [
-    { label: '🔥 High', items: highPriority, accent: 'border-red-500/30 bg-red-500/5', badgeColor: 'text-red-400 bg-red-500/15' },
-    { label: '⚡ Medium', items: mediumPriority, accent: 'border-orange-500/30 bg-orange-500/5', badgeColor: 'text-orange-400 bg-orange-500/15' },
-    { label: '💤 Low', items: lowPriority, accent: 'border-slate-500/20 bg-slate-500/5', badgeColor: 'text-slate-400 bg-slate-500/15' },
+    { label: '🔥 High', items: highPriority, accent: 'border-red-500/30 bg-red-500/5', badgeColor: 'text-red-600 dark:text-red-400 bg-red-500/15' },
+    { label: '⚡ Medium', items: mediumPriority, accent: 'border-orange-500/30 bg-orange-500/5', badgeColor: 'text-orange-600 dark:text-orange-400 bg-orange-500/15' },
+    { label: '💤 Low', items: lowPriority, accent: 'border-slate-500/20 bg-slate-500/5', badgeColor: 'text-slate-600 dark:text-slate-400 bg-slate-500/15' },
   ];
 
   return (

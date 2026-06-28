@@ -59,7 +59,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
               </div>
               <button
                 onClick={() => setSidebarCollapsed(false)}
-                className="w-full flex items-center justify-center p-1.5 rounded-md hover:bg-hover text-slate-500 hover:text-purple-500 transition-colors"
+                className="w-full flex items-center justify-center p-1.5 rounded-md hover:bg-hover text-slate-600 dark:text-slate-500 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
                 title="Expand Sidebar"
               >
                 <ChevronRight className="h-4 w-4" />
@@ -79,7 +79,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
               </div>
               <button
                 onClick={() => setSidebarCollapsed(true)}
-                className="p-1.5 hover:bg-hover rounded-full text-slate-500 hover:text-foreground transition-colors"
+                className="p-1.5 hover:bg-hover rounded-full text-slate-600 dark:text-slate-500 hover:text-foreground transition-colors"
                 title="Collapse Sidebar"
               >
                 <ChevronLeft className="h-4 w-4" />
@@ -143,17 +143,17 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
           <div className={`flex items-center justify-between text-[11px] font-semibold text-slate-600 dark:text-slate-400 ${sidebarCollapsed ? 'flex-col gap-3 items-center' : ''}`}>
             {!sidebarCollapsed ? (
               <span className="flex items-center gap-1.5">
-                <User className="h-3.5 w-3.5 text-slate-500" />
+                <User className="h-3.5 w-3.5 text-slate-600 dark:text-slate-400" />
                 Demo Learner
               </span>
             ) : (
               <span title="Demo Learner">
-                <User className="h-4 w-4 text-slate-500" />
+                <User className="h-4 w-4 text-slate-600 dark:text-slate-400" />
               </span>
             )}
             <button
               onClick={onToggleTheme}
-              className="p-1.5 hover:bg-hover rounded-full text-slate-500 hover:text-foreground dark:text-slate-400 dark:hover:text-slate-200"
+              className="p-1.5 hover:bg-hover rounded-full text-slate-600 dark:text-slate-500 hover:text-foreground transition-colors"
               title="Toggle Light/Dark Theme"
             >
               {theme === 'dark' ? <Sun className="h-3.5 w-3.5" /> : <Moon className="h-3.5 w-3.5" />}
@@ -162,7 +162,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
 
           {!sidebarCollapsed && (
             <div className="bg-input/25 p-2.5 rounded border border-border/40 text-[10px]">
-              <span className="text-emerald-400 flex items-center gap-1.5 font-semibold">
+              <span className="text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5 font-semibold">
                 <HardDrive className="h-3.5 w-3.5" />
                 Saved Locally (IndexedDB)
               </span>

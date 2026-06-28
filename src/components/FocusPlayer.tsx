@@ -290,7 +290,7 @@ export const FocusPlayer: React.FC<FocusPlayerProps> = ({
           <div className="flex items-center gap-2">
             <button 
               onClick={onExit}
-              className="flex items-center gap-1.5 text-xs text-slate-400 hover:text-foreground transition-colors"
+              className="flex items-center gap-1.5 text-xs text-slate-600 dark:text-slate-400 hover:text-foreground transition-colors"
             >
               <ArrowLeft className="h-4 w-4" />
               {playlistContext ? 'Back to Playlist' : 'Back'}
@@ -345,7 +345,7 @@ export const FocusPlayer: React.FC<FocusPlayerProps> = ({
             >
               {video.categoryName}
             </span>
-            <span className="text-xs text-slate-400 dark:text-slate-600">•</span>
+            <span className="text-xs text-slate-600 dark:text-slate-400">•</span>
             <span className="text-xs text-slate-655 dark:text-slate-400 font-semibold">
               {video.type === 'video' ? video.channel : video.source}
             </span>

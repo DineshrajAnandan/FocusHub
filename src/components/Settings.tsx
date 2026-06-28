@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { YoutubeService } from '../services/youtube';
-import { 
+import {
   Settings as SettingsIcon, ShieldAlert, Key, CheckCircle, RefreshCw, Trash2, HelpCircle, HardDrive, Video, Database
 } from 'lucide-react';
 
@@ -56,7 +56,7 @@ export const Settings: React.FC<SettingsProps> = ({ onRefreshData }) => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        
+
         {/* Left Column: Settings Forms */}
         <div className="lg:col-span-2 space-y-6">
 
@@ -74,21 +74,21 @@ export const Settings: React.FC<SettingsProps> = ({ onRefreshData }) => {
                   <HelpCircle className="h-3.5 w-3.5 text-slate-500 cursor-help" />
                 </span>
               </label>
-              <input 
-                type="password" 
+              <input
+                type="password"
                 placeholder="AIzaSy..."
                 value={ytApiKey}
                 onChange={e => setYtApiKey(e.target.value)}
                 className="w-full bg-background border border-border rounded px-3 py-2 text-xs text-foreground placeholder-slate-500 dark:placeholder-slate-600 focus:outline-none focus:border-purple-500"
               />
               <p className="text-[10px] text-slate-600 dark:text-slate-400 leading-relaxed">
-                Used to fetch video titles, channel names, and durations when you paste a YouTube URL. 
+                Used to fetch video titles, channel names, and durations when you paste a YouTube URL.
                 Get a key from <span className="text-purple-700 dark:text-purple-400 font-semibold">console.cloud.google.com</span>.
               </p>
             </div>
 
-            <button 
-              type="submit" 
+            <button
+              type="submit"
               className="bg-purple-600 hover:bg-purple-700 text-white text-xs font-semibold py-2 px-4 rounded transition-colors flex items-center gap-1.5"
             >
               {isSaving ? (
@@ -104,17 +104,17 @@ export const Settings: React.FC<SettingsProps> = ({ onRefreshData }) => {
 
           {/* Reset App Block */}
           <div className="bg-red-50 dark:bg-red-950/10 border border-red-200 dark:border-red-900/20 p-6 rounded-lg space-y-4">
-            <h2 className="text-sm font-bold text-red-700 dark:text-red-400 flex items-center gap-1.5">
+            <h2 className="text-sm font-bold text-red-600 dark:text-red-400 flex items-center gap-1.5">
               <ShieldAlert className="h-4 w-4" />
               Danger Zone
             </h2>
-            <p className="text-xs text-slate-700 dark:text-slate-400">
-              Resetting FocusTube will permanently delete all your data from the local IndexedDB database — 
+            <p className="text-xs text-slate-600 dark:text-slate-400">
+              Resetting FocusTube will permanently delete all your data from the local IndexedDB database —
               including videos, categories, notes, playlists, and focus logs. This cannot be undone.
             </p>
-            <button 
+            <button
               onClick={handleResetData}
-              className="bg-red-600 hover:bg-red-700 border border-transparent text-white dark:bg-red-950/30 dark:hover:bg-red-900 dark:border-red-800 dark:text-red-400 font-semibold py-2 px-4 rounded text-xs flex items-center gap-1.5 transition-colors shadow-sm"
+              className="hover:bg-red-100 border border-red-200 text-red-700 dark:hover:bg-red-900 dark:border-red-800 dark:text-red-400 font-semibold py-2 px-4 rounded text-xs flex items-center gap-1.5 transition-colors shadow-sm"
             >
               <Trash2 className="h-3.5 w-3.5" />
               Reset All Data
@@ -128,9 +128,9 @@ export const Settings: React.FC<SettingsProps> = ({ onRefreshData }) => {
             <span className="text-xs font-bold text-slate-600 dark:text-slate-400 block uppercase tracking-wider">
               Storage Status
             </span>
-            
+
             <div className="flex items-center gap-3">
-              <div className="p-2.5 bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-250 dark:border-emerald-900/40 rounded-full text-emerald-700 dark:text-emerald-400">
+              <div className="p-2.5 bg-transparent dark:bg-emerald-950/30 border border-emerald-250 dark:border-emerald-900/40 rounded-full text-emerald-700 dark:text-emerald-400">
                 <HardDrive className="h-5 w-5" />
               </div>
               <div>

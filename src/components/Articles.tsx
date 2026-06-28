@@ -344,7 +344,7 @@ export const Articles: React.FC<ArticlesProps> = ({
                     
                     <div className="flex flex-wrap items-center gap-1.5 text-[10px]">
                       <span className="text-slate-655 dark:text-slate-400 truncate max-w-[120px] font-bold">{art.source}</span>
-                      <span className="text-slate-400 dark:text-slate-600">•</span>
+                      <span className="text-slate-600 dark:text-slate-400">•</span>
                       
                       {/* Interactive category dropdown */}
                       <select

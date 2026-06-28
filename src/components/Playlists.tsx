@@ -462,7 +462,7 @@ export const Playlists: React.FC<PlaylistsProps> = ({
                           }`}
                         >
                           {/* Index number */}
-                          <span className="text-xs font-black text-slate-600 dark:text-slate-600 w-6 flex-shrink-0 text-center">
+                          <span className="text-xs font-black text-slate-600 dark:text-slate-400 w-6 flex-shrink-0 text-center">
                             {String(index + 1).padStart(2, '0')}
                           </span>
 
